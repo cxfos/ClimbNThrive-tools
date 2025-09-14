@@ -174,19 +174,61 @@ climbnthrive-tsx-screener/
 
 **Next**: Ready for Step 2 (Ticker Discovery - FMP integration)
 
-### 🔄 Step 2: Ticker Discovery (FMP) - PENDING
+### ✅ Step 2: Ticker Discovery - COMPLETED (2024-09-14)
+**Status**: ✅ COMPLETED
+
+**What was implemented:**
+- **Official TSX API Integration**: Discovered and implemented TSX's official company directory API
+  - Endpoint: `https://www.tsx.com/json/company-directory/search/{exchange}/{letter}`
+  - Fetches complete company listings A-Z for both TSX and TSXV
+- **Complete Coverage**: Successfully fetched **3,663 TSX companies** (2,700 unique companies + instruments)
+- **Proper Response Handling**: Implemented correct parsing for TSX API response format:
+  ```json
+  {
+    "results": [
+      {
+        "symbol": "AW",
+        "name": "A & W Food Services of Canada Inc.",
+        "instruments": [{"symbol": "AW", "name": "A&W Food Serv Canada"}]
+      }
+    ]
+  }
+  ```
+- **Yahoo Symbol Mapping**: All symbols properly mapped to Yahoo Finance format (.TO suffix)
+- **Smart Caching**: Results cached to `data/cache/tsx-official-tsx-YYYYMMDD.json`
+- **Multiple Instruments**: Handles companies with multiple share classes (e.g., HDGE, HDGE.U)
+- **Rate Limiting**: Respectful 100ms delays between API calls
+- **Error Handling**: Robust validation with Zod schemas and graceful error recovery
+
+**Key Achievement**: **COMPLETE TSX DIRECTORY** - Every single TSX-listed company discovered via official API
+
+**Files created:**
+- `src/sources/tsx-official.ts` - Official TSX API client with full A-Z fetching
+- Updated `src/index.ts` - Integration with TSX official client
+
+**Cleanup performed:**
+- Removed deprecated FMP symbol discovery code (`src/sources/fmp.ts`)
+- Removed fallback symbol lists (`src/sources/symbols-fallback.ts`)
+- Removed Yahoo screener approach (`src/sources/yahoo-screener.ts`)
+- Removed debug utilities (`src/utils/debug.ts`)
+- Created minimal `src/sources/fmp-ratios.ts` for potential future fundamental data fallback
+
+**Next**: Ready for Step 3 (Data Fetchers - Yahoo Finance integration)
+
+### 🔄 Step 3: Data Fetchers - READY TO START
 **Status**: 🔄 READY TO START
 
 **Requirements:**
-- Implement `src/sources/fmp.ts` with `fetchAllSymbols()`
-- Filter TSX/TSXV companies from FMP API
-- Map to Yahoo Finance symbol format (.TO, .V)
-- Cache results to `data/cache/symbols-YYYYMMDD.json`
-- Show sample of first 10 tickers for confirmation
+- Implement `src/sources/yahoo.ts` with rate limiting (Bottleneck)
+- `getQuote(symbolYahoo)` - Basic quote data (price, market cap, beta, etc.)
+- `getHistoricalDaily(symbolYahoo, lookbackYears = 3)` - For Sharpe ratio calculations
+- `getFinancials(symbolYahoo)` - Income statement & balance sheet via quoteSummary
+- Optional `src/sources/fmp-ratios.ts` fallback for missing Yahoo data
+- Cache individual responses under `data/cache/${symbol}/`
+- Handle 3,663 companies with proper progress indicators
 
 ### ⏳ Remaining Steps:
-- Step 3: Data fetchers (Yahoo first, FMP fallback)
-- Step 4: Metrics computation  
-- Step 5: Assembler & Export
-- Step 6: DX & Reliability
+- Step 4: Metrics computation (CAGR, Sharpe, profitability streak, etc.)
+- Step 5: Assembler & Export (XLSX/CSV generation)
+- Step 6: DX & Reliability (progress bars, retry logic, validation, tests)
 - Step 7: Final polish
