@@ -31,18 +31,18 @@ const OptimizedTsxResponseSchema = z.object({
       totalDebtToEquity: z.union([z.number(), z.string()]).nullable(),
       
       // For EPS CAGR and years without loss calculations
-      eps: z.number().nullable(),
+      eps: z.union([z.number(), z.string()]).nullable(),
       
       // Current price for calculations
-      price: z.number().nullable(),
+      price: z.union([z.number(), z.string()]).nullable(),
       
       // Market data for Sharpe ratio (we'll need historical data separately)
-      beta: z.number().nullable(),
+      beta: z.union([z.number(), z.string()]).nullable(),
       
       // Additional useful fields that don't cost extra
-      MarketCap: z.number().nullable(),
-      peRatio: z.number().nullable(),
-      dividendYield: z.number().nullable(),
+      MarketCap: z.union([z.number(), z.string()]).nullable(),
+      peRatio: z.union([z.number(), z.string()]).nullable(),
+      dividendYield: z.union([z.number(), z.string()]).nullable(),
       
     }).nullable(),
   }),
@@ -59,14 +59,14 @@ export interface OptimizedQuoteData {
   returnOnEquity?: number;
   returnOnAssets?: number;
   totalDebtToEquity?: number;
-  eps?: number;
-  price?: number;
-  beta?: number;
+  eps?: number | string;
+  price?: number | string;
+  beta?: number | string;
   
   // Bonus data (useful but not in main table)
-  marketCap?: number;
-  peRatio?: number;
-  dividendYield?: number;
+  marketCap?: number | string;
+  peRatio?: number | string;
+  dividendYield?: number | string;
   
   // Metadata
   fetchedAt: string;

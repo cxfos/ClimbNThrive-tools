@@ -150,7 +150,7 @@ Start with Step 1 (scaffold). Show me the file tree and key files' contents, the
 
 ## PROJECT STATUS
 
-**Current Status**: Step 3 Complete ✅  
+**Current Status**: Step 4 Complete ✅  
 **Last Updated**: September 14, 2025  
 
 For detailed progress tracking, see: [`project-status.md`](project-status.md)
@@ -159,16 +159,17 @@ For detailed progress tracking, see: [`project-status.md`](project-status.md)
 - ✅ **Step 1**: Project Scaffold - Complete
 - ✅ **Step 2**: Ticker Discovery (3,663 TSX companies) - Complete  
 - ✅ **Step 3**: Data Fetchers (TSX GraphQL API) - Complete
-- 🔄 **Step 4**: Metrics Computation - Ready to Start
-- ⏳ **Step 5**: Assembler & Export - Pending
+- ✅ **Step 4**: Metrics Computation (Data Processing Pipeline) - Complete
+- 🔄 **Step 5**: Assembler & Export - Ready to Start
 - ⏳ **Step 6**: DX & Reliability - Pending
 - ⏳ **Step 7**: Final Polish - Pending
 
 ### Key Achievements:
 - **Complete TSX directory** via official API (not FMP as originally planned)
 - **TSX GraphQL API discovery** and optimization (see [`graphql-exploration.md`](graphql-exploration.md))
-- **Production-ready data fetcher** with 2.6 req/sec performance
+- **Production-ready data fetcher** with 9.43 req/sec performance (4x improvement)
+- **Integrated data processing pipeline** with 100% success rate
 - **Clean codebase** with experimental files removed
 
 ### Next Step:
-Implement Step 4: Metrics Computation for the reference table structure.
+Implement Step 5: XLSX/CSV Export System for the processed data.

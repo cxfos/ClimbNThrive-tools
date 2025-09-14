@@ -5,6 +5,7 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import * as path from 'path';
 import { TsxOfficialClient, ProcessedTsxSymbol } from './sources/tsx-official';
+import { DataProcessor, ConsoleProgressReporter } from './data-processor';
 
 interface CliArgs {
   includeTsx: boolean;
@@ -117,10 +118,68 @@ async function main() {
     console.log(`\n📈 Exchange breakdown: TSX: ${tsxCount}, TSXV: ${tsxvCount}`);
 
     console.log('\n🎯 Ticker discovery completed successfully!');
-    console.log('📋 Next: Data fetching and metrics computation (Step 2-4)');
+    
+    // Step 2: Data fetching and metrics computation
+    console.log('\n📊 Step 2: Fetching fundamental data and computing metrics...');
+    
+    const processor = new DataProcessor({
+      concurrency: argv.concurrency,
+      riskFreeRate: riskFreeRate,
+      progressCallback: (progress) => {
+        // Simple progress reporting every few seconds
+        const reporter = new ConsoleProgressReporter();
+        reporter.report(progress);
+      }
+    });
+    
+    const processingResult = await processor.processSymbols(limitedSymbols);
+    
+    // Step 3: Display results summary
+    console.log('\n📈 Step 3: Results Summary');
+    console.log('==========================');
+    
+    console.log(`\n📊 Processing Summary:`);
+    console.log(`  Total companies: ${processingResult.summary.total}`);
+    console.log(`  Successful: ${processingResult.summary.successful} (${(processingResult.summary.successful/processingResult.summary.total*100).toFixed(1)}%)`);
+    console.log(`  Failed: ${processingResult.summary.failed}`);
+    console.log(`  Processing time: ${processingResult.summary.processingTime.toFixed(1)}s`);
+    console.log(`  Average rate: ${(processingResult.summary.successful/processingResult.summary.processingTime).toFixed(2)} companies/sec`);
+    
+    console.log(`\n📈 Data Quality:`);
+    console.log(`  Complete data: ${processingResult.summary.dataQuality.complete}`);
+    console.log(`  Partial data: ${processingResult.summary.dataQuality.partial}`);
+    console.log(`  Minimal data: ${processingResult.summary.dataQuality.minimal}`);
+    
+    // Show sample results
+    if (processingResult.metrics.length > 0) {
+      console.log('\n📋 Sample Results:');
+      console.log('┌─────────┬──────────────────────────────────────┬─────────────┬─────────┬─────────┐');
+      console.log('│ Ticker  │ Company Name                         │ Sector      │ ROE     │ ROIC    │');
+      console.log('├─────────┼──────────────────────────────────────┼─────────────┼─────────┼─────────┤');
+      
+      processingResult.metrics.slice(0, 10).forEach(metric => {
+        const ticker = metric.ticker.padEnd(7);
+        const name = (metric.company.length > 36 ? metric.company.substring(0, 33) + '...' : metric.company).padEnd(36);
+        const sector = ((metric.sector || 'N/A').length > 11 ? (metric.sector || 'N/A').substring(0, 8) + '...' : (metric.sector || 'N/A')).padEnd(11);
+        const roe = (metric.roe ? `${metric.roe.toFixed(1)}%` : 'N/A').padEnd(7);
+        const roic = (metric.roic ? `${metric.roic.toFixed(1)}%` : 'N/A').padEnd(7);
+        console.log(`│ ${ticker} │ ${name} │ ${sector} │ ${roe} │ ${roic} │`);
+      });
+      
+      console.log('└─────────┴──────────────────────────────────────┴─────────────┴─────────┴─────────┘');
+      
+      if (processingResult.metrics.length > 10) {
+        console.log(`\n... and ${processingResult.metrics.length - 10} more companies with data`);
+      }
+    }
+    
+    console.log('\n🎉 Data processing completed successfully!');
+    console.log('📋 Next: Export to XLSX/CSV (Step 4-5)');
+    console.log('\n💡 Note: Full metrics computation (EPS CAGR, Sharpe ratio, etc.) requires additional data sources.');
+    console.log('    Current implementation focuses on available TSX GraphQL data (ROE, ROIC, sector info).');
     
   } catch (error) {
-    console.error('❌ Error during ticker discovery:', error instanceof Error ? error.message : error);
+    console.error('❌ Error during processing:', error instanceof Error ? error.message : error);
     process.exit(1);
   }
 }

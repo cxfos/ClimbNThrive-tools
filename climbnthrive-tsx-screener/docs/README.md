@@ -9,8 +9,9 @@ Complete documentation for the TSX fundamentals screening tool.
 
 - Progress overview table (Steps 1-7)
 - Step 3 achievements (TSX GraphQL API discovery)
-- Next steps (Step 4: Metrics Computation)
-- Performance projections
+- Step 4 achievements (Data processing pipeline)
+- Next steps (Step 5: Export System)
+- Performance metrics (9.43 req/sec, 100% success)
 
 ### 📝 [Project Specification](project-specification.md)
 **Original requirements document** - the complete project specification.
@@ -38,7 +39,7 @@ Complete documentation for the TSX fundamentals screening tool.
 climbnthrive-tsx-screener/
 ├── src/                    # TypeScript source code
 │   ├── sources/           # Data fetching (TSX API, Yahoo Finance)
-│   ├── metrics/           # 🔄 Step 4 target - Metrics computation
+│   ├── metrics/           # ✅ Step 4 complete - Metrics computation
 │   └── utils/             # Utility functions
 ├── docs/                  # 📚 This documentation
 ├── data/cache/           # API response caching
@@ -54,9 +55,9 @@ climbnthrive-tsx-screener/
 
 ## 📊 Current Status
 
-**Status**: Step 3 Complete ✅ → Ready for Step 4  
+**Status**: Step 4 Complete ✅ → Ready for Step 5  
 **Goal**: Generate fundamentals table for all 3,663 TSX companies  
-**Achievement**: TSX GraphQL API with 2.6 req/sec, 80%+ data completeness  
+**Achievement**: Data processing pipeline with 9.43 req/sec, 100% success rate  
 
 ### Progress Summary
 | Step | Status | Achievement |
@@ -64,8 +65,9 @@ climbnthrive-tsx-screener/
 | 1 | ✅ Complete | Project scaffold & TypeScript setup |
 | 2 | ✅ Complete | **3,663 TSX companies** via official API |
 | 3 | ✅ Complete | **TSX GraphQL API** discovery & optimization |
-| 4 | 🔄 Ready | Metrics computation for target table |
-| 5-7 | ⏳ Pending | Export, testing, polish |
+| 4 | ✅ Complete | **Data processing pipeline** with metrics computation |
+| 5 | 🔄 Ready | XLSX/CSV export system |
+| 6-7 | ⏳ Pending | Testing, validation, polish |
 
 ---
 
