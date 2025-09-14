@@ -153,7 +153,7 @@ Start with Step 1 (scaffold). Show me the file tree and key files' contents, the
 **Current Status**: Step 3 Complete ✅  
 **Last Updated**: September 14, 2025  
 
-For detailed progress tracking, see: [`PROJECT-STATUS.md`](../climbnthrive-tsx-screener/PROJECT-STATUS.md)
+For detailed progress tracking, see: [`project-status.md`](project-status.md)
 
 ### Quick Status Summary:
 - ✅ **Step 1**: Project Scaffold - Complete
@@ -166,7 +166,7 @@ For detailed progress tracking, see: [`PROJECT-STATUS.md`](../climbnthrive-tsx-s
 
 ### Key Achievements:
 - **Complete TSX directory** via official API (not FMP as originally planned)
-- **TSX GraphQL API discovery** and optimization (see `docs/GRAPHQL-EXPLORATION.md`)
+- **TSX GraphQL API discovery** and optimization (see [`graphql-exploration.md`](graphql-exploration.md))
 - **Production-ready data fetcher** with 2.6 req/sec performance
 - **Clean codebase** with experimental files removed
 
